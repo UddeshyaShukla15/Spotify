@@ -1,6 +1,5 @@
 const musicModel = require("../models/music.model.js");
 const albumModel = require("../models/album.model.js");
-// const authMiddleware = require("../middlewares/auth.middleware.js");
 const {uploadFile} = require("../services/storage.service.js");
 const jwt = require("jsonwebtoken");
 
@@ -50,4 +49,30 @@ async function createAlbum(req, res){
     })
 }
 
-module.exports = {createMusic, createAlbum};
+async function getMusic(req, res){
+    
+    const musics = await musicModel
+    .find()
+    .limit(10)
+    .populate("artist")
+
+    res.status(200).json({
+        message: "Musics fetched successfully",
+        musics
+    })
+}
+
+async function getAlbum(req, res){
+    
+    const albums = await albumModel
+    .find()
+    .limit(5)
+    .populate("artist")
+
+    res.status(200).json({
+        message: "Albums fetched successfully",
+        albums
+    })
+}
+
+module.exports = {createMusic, createAlbum, getMusic, getAlbum};
